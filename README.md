@@ -66,6 +66,7 @@ python src/gap_analysis.py    # supply vs demand ranking, by credit type and by 
 python src/price_trends.py    # prices by year and by scarcity
 python src/export_powerbi.py  # one Excel file for the Power BI dashboard
 python src/make_charts.py     # the charts in outputs/figures
+python src/biobanking_check.py  # BioBanking species cross-check (needs BioBanking_*.xls)
 ```
 
 ## Method
@@ -108,6 +109,31 @@ Full details: [data quality report](outputs/reports/02_Data_Quality_Report.pdf) 
 **Takeaway:** the results here are consistent with official findings, and are best read as a
 *conservative lower bound* on scarcity.
 
+## BioBanking cross-check
+
+The pre-2017 BioBanking registers hold another **638,849 species credits** (200 holdings) and
+**110,860 ecosystem credits** (637 holdings), extracted 6 October 2026. They are **not added to
+the main ranking**, for two reasons:
+
+1. BioBanking credits must pass an equivalence assessment before they can meet a BOS
+   obligation. Those already assessed appear in the BOS supply register as "Equivalence
+   Credits" and are counted. Adding the rest would double count, or count credits that
+   cannot yet be used.
+2. BioBanking ecosystem credits use the old BioMetric vegetation codes (for example `NA228`),
+   not PCT IDs, and there is no public lookup between the two.
+
+Species credits can be matched by scientific name (`src/biobanking_check.py`):
+
+| Scarce species (under 1 year of BOS supply) | BOS available | Retired / yr | BioBanking credits |
+|---|---:|---:|---:|
+| *Pimelea curviflora* var. *curviflora* | 0 | 6 | **9,552** |
+| Striped Legless Lizard (*Delma impar*) | 81 | 95 | 284 |
+| Dural Land Snail (*Pommerhelix duralensis*) | 53 | 58 | 18 |
+| The other 8 (Harrow Wattle, Small Purple-pea, both Pine Donkey Orchid listings, Tarengo Leek Orchid, Superb Parrot, Singleton Mint Bush, Chariot Wheels) | | | **0** |
+
+**Result:** only 3 of the 11 scarcest species have any BioBanking credits, and only one has
+enough to change its position. The shortage finding holds, and is slightly strengthened.
+
 ## Limitations
 
 - **Demand is measured from retirements**, which is demand that was met. Unmet demand
@@ -133,8 +159,8 @@ Full details: [data quality report](outputs/reports/02_Data_Quality_Report.pdf) 
   Orchid figures (503 credits a year each) come from a single project (SSD 8642) that
   retired both species together in June 2024. Averaging a one-off obligation as a yearly rate
   overstates ongoing demand for those species.
-- **The BioBanking (pre-2017) registers are not yet included**, except where BioBanking
-  credits appear as "Equivalence" credits in the BOS supply register.
+- **BioBanking ecosystem credits are not matched** to PCTs, because they use old BioMetric
+  vegetation codes. Species credits are cross-checked (see above).
 
 ## Policy context
 
