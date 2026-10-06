@@ -46,21 +46,40 @@ All data comes from the DCCEEW [Biodiversity Offsets Scheme public registers](ht
 | Credit Supply Register | 2,861 | Credits available now (Issued, Equivalence) and in the pipeline (Pending Review) |
 | Credit Transactions Register | 2,556 | Retirements (demand) and transfers with prices |
 | Credit Demand Register | 0 | Empty at extraction, so retirements are used as the demand measure |
+| BioBanking credits registers (species and ecosystem) | 837 | Cross-check of pre-2017 supply (extracted 6 October 2026) |
 
 Field definitions follow the [BOS public registers user guide](https://www.environment.nsw.gov.au/sites/default/files/biodiversity-offset-scheme-public-registers-user-guide-230238.pdf).
 The raw files are **not** included in this repository because they contain personal contact
 details. See the [refresh guide](outputs/reports/04_Refresh_Guide.pdf) to download them.
 
-**Licence and attribution:** register data © State of New South Wales (DCCEEW), licensed
-under [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/).
+## Data source and licence
+
+Register data © State of New South Wales (Department of Climate Change, Energy, the
+Environment and Water), licensed under
+[CC BY 4.0](https://creativecommons.org/licenses/by/4.0/). The data has been cleaned and
+summarised for this analysis. The original registers are available from DCCEEW at the link
+above. Personal contact details in the registers are removed and never published here.
+
+## Installation
+
+Requirements: Python 3.10 or later.
+
+```bash
+git clone https://github.com/Likithaa07/nsw-biodiversity-credit-gap.git
+cd nsw-biodiversity-credit-gap
+pip install -r requirements.txt
+```
+
+Then download the registers into `data/raw/` as described in the
+[refresh guide](outputs/reports/04_Refresh_Guide.pdf):
+`Supply.xls`, `Demand.xls`, `Transactions.xls`, `BioBanking_Species.xls` and
+`BioBanking_Ecosystem.xls`.
 
 ## How to run it
 
-Requirements: Python 3.10+.
+Run the scripts in this order:
 
 ```bash
-pip install -r requirements.txt
-# put Supply.xls, Demand.xls and Transactions.xls in data/raw/
 python src/clean.py           # clean the registers and write the data quality log
 python src/gap_analysis.py    # supply vs demand ranking, by credit type and by region
 python src/price_trends.py    # prices by year and by scarcity
@@ -68,6 +87,24 @@ python src/export_powerbi.py  # one Excel file for the Power BI dashboard
 python src/make_charts.py     # the charts in outputs/figures
 python src/biobanking_check.py  # BioBanking species cross-check (needs BioBanking_*.xls)
 ```
+
+## Outputs
+
+| File | What it contains |
+|---|---|
+| `outputs/dashboard.pdf` | Power BI dashboard: scarcity ranking, prices and data quality pages |
+| `outputs/dashboard.pbix` | The same dashboard as an editable Power BI file |
+| `outputs/powerbi_data.xlsx` | Summary tables that feed the dashboard |
+| `outputs/reports/01_Findings_Report.pdf` | Full findings, with charts, policy context and limitations |
+| `outputs/reports/02_Data_Quality_Report.pdf` | Every data issue found and how it was handled |
+| `outputs/reports/03_Data_Dictionary.pdf` | Definitions of every column in the clean data and results |
+| `outputs/reports/04_Refresh_Guide.pdf` | How to update the analysis with new register downloads |
+| `outputs/figures/*.png` | The 8 charts used in the reports |
+
+Running the pipeline also creates these files in `data/processed/` (not committed):
+`supply_clean.csv`, `transactions_clean.csv`, `data_quality_log.csv`, `gap_ranking.csv`,
+`gap_by_region.csv`, `price_by_year.csv`, `price_by_scarcity.csv`,
+`price_by_credit_type.csv` and `biobanking_species_check.csv`.
 
 ## Method
 
@@ -178,6 +215,24 @@ data/processed/    cleaned data and results (not committed)
 src/               Python pipeline: readers, clean, gap_analysis, price_trends, export_powerbi, make_charts
 outputs/           dashboard PDF, report PDFs (reports/), charts (figures/), Power BI data file
 ```
+
+## References
+
+**Data**
+- NSW DCCEEW. [Biodiversity Offsets Scheme public registers](https://www.environment.nsw.gov.au/topics/animals-and-plants/biodiversity-offsets-scheme/maps-systems-and-resources/public-registers). Supply, demand and transactions registers, extracted 5 October 2026.
+- NSW DCCEEW. [BioBanking public registers](https://www.environment.nsw.gov.au/bimsprapp/BiobankingPR.aspx). Biodiversity credits register, extracted 6 October 2026.
+- NSW Department of Planning and Environment (2023). [Biodiversity Offsets Scheme public registers user guide](https://www.environment.nsw.gov.au/sites/default/files/biodiversity-offset-scheme-public-registers-user-guide-230238.pdf).
+- NSW DCCEEW. [NSW Plant Community Type classification](https://www.environment.nsw.gov.au/topics/animals-and-plants/biodiversity/nsw-bionet/nsw-plant-community-type-classification).
+
+**Legislation and policy**
+- [Biodiversity Conservation Act 2016 (NSW)](https://legislation.nsw.gov.au/view/html/inforce/current/act-2016-063).
+- [Biodiversity Conservation Regulation 2017 (NSW)](https://legislation.nsw.gov.au/view/html/inforce/current/sl-2017-0432), including the like-for-like and variation rules for offsets.
+
+**Reviews and market reports**
+- Audit Office of New South Wales (2022). [Effectiveness of the Biodiversity Offsets Scheme](https://www.audit.nsw.gov.au/our-work/reports/effectiveness-of-the-biodiversity-offsets-scheme). Performance audit, 30 August 2022.
+- Independent Pricing and Regulatory Tribunal NSW (2026). [Annual Report 2024–25: Biodiversity Credits Market Monitoring](https://www.ipart.nsw.gov.au/documents/final-report/annual-report-2024-25-biodiversity-credits-market-monitoring-july-2026). July 2026.
+- Independent Pricing and Regulatory Tribunal NSW (2023). [Annual Report 2022–23: Biodiversity Market Monitoring](https://www.ipart.nsw.gov.au/sites/default/files/cm9_documents/Annual-Report-2022-23-Biodiversity-Market-Monitoring-December-2023.PDF). December 2023.
+- Henry, K. (2023). Independent review of the Biodiversity Conservation Act 2016. Tabled August 2023 ([NSW Government announcement](https://www.environment.nsw.gov.au/news/statutory-reviews-into-native-vegetation-management-and-biodiversity-laws-tabled)).
 
 ## Author
 
