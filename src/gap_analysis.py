@@ -78,3 +78,25 @@ top = ranked.head(10)[["scarcity_rank", "credit_class", "credit_name",
 top["credit_name"] = top["credit_name"].str[:60]  # shorten long names for printing only
 print(top.round(1).to_string(index=False))
 print(f"\nSaved to {PROCESSED / 'gap_ranking.csv'}")
+
+
+# STEP 8: Gap by region - all credits in each IBRA subregion pooled together
+# (a broad view of where pressure is highest; real like-for-like matching is narrower)
+region_names = (supply.dropna(subset=["ibra_subregion", "ibra_region"])
+                .drop_duplicates("ibra_subregion").set_index("ibra_subregion")["ibra_region"])
+region = pd.DataFrame({
+    "available_credits": supply[available].groupby("ibra_subregion")["number_of_credits"].sum(),
+    "pending_credits": supply[pending].groupby("ibra_subregion")["number_of_credits"].sum(),
+    "retired_per_year": retired.groupby("ibra_subregion")["number_of_credits"].sum() / years_of_data,
+}).fillna(0)
+# Subregions with no supply listed have no region name in the data, so fill the known ones
+region_names = pd.concat([region_names, pd.Series({"Pooncarie-Darling": "Murray Darling Depression"})])
+region["ibra_region"] = region.index.map(region_names)
+region["years_of_supply"] = (region["available_credits"] / region["retired_per_year"]).where(
+    region["retired_per_year"] > 0)
+region = (region[region["retired_per_year"] >= 50]  # ignore subregions with very little demand
+          .sort_values("years_of_supply").reset_index(names="ibra_subregion"))
+region.to_csv(PROCESSED / "gap_by_region.csv", index=False)
+print(f"\nSubregions with at least 50 credits retired a year: {len(region)}")
+print(region.head(5)[["ibra_subregion", "ibra_region", "available_credits", "retired_per_year",
+                      "years_of_supply"]].round(1).to_string(index=False))
