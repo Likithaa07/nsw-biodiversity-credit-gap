@@ -122,8 +122,9 @@ log("supply", "Ecosystem credit with no PCT ID", (eco & supply["pct_id"].isna())
 log("supply", "Species credit with no species name",
     (~eco & supply["species_scientific_name"].isna()).sum(),
     "Kept, flagged (cannot be matched to demand)", "species_scientific_name")
-log("supply", "Missing IBRA subregion", supply["ibra_subregion"].isna().sum(),
-    "Kept, flagged", "ibra_subregion")
+log("supply", "Missing IBRA subregion (BioBanking equivalence species credits)",
+    supply["ibra_subregion"].isna().sum(),
+    "Kept; expected, species credits are matched by species not region", "ibra_subregion")
 
 
 # STEP 9: Transactions quality checks
@@ -156,23 +157,38 @@ supply["credit_class"] = supply["ecosystem_or_species"]
 transactions["credit_class"] = transactions["species_scientific_name"].notna().map(
     {True: "Species", False: "Ecosystem"})
 
-# Transactions have no PCT ID, so look it up from the PCT name in the supply register
-pct_lookup = (supply.dropna(subset=["pct_id", "plant_community_type_common_name"])
-              .drop_duplicates("plant_community_type_common_name")
-              .set_index("plant_community_type_common_name")["pct_id"])
-transactions["pct_id"] = transactions["plant_community_type_common_name"].map(pct_lookup).astype("Int64")
-unmatched = (transactions["credit_class"] == "Ecosystem") & transactions["pct_id"].isna()
-log("transactions", "PCT name not found in supply register", unmatched.sum(),
-    "Kept, flagged (no PCT ID)", "pct_id")
+
+# The two registers spell some PCT names differently (e.g. "Blakelys" vs "Blakely's"),
+# so match on a simplified name: lowercase, no apostrophes, no punctuation
+def simplify(names):
+    return (names.str.lower().str.replace("'", "", regex=False)
+            .str.replace(r"[^a-z0-9]+", " ", regex=True).str.strip())
 
 
-def credit_key(df):
-    key = "PCT " + df["pct_id"].astype("string")
-    return key.where(df["credit_class"] == "Ecosystem", df["species_scientific_name"])
+supply["pct_name_key"] = simplify(supply["plant_community_type_common_name"])
+transactions["pct_name_key"] = simplify(transactions["plant_community_type_common_name"])
 
+# Transactions have no PCT ID, so look it up from the supply register using the simplified name
+pct_lookup = (supply.dropna(subset=["pct_id", "pct_name_key"])
+              .drop_duplicates("pct_name_key")
+              .set_index("pct_name_key")["pct_id"])
+transactions["pct_id"] = transactions["pct_name_key"].map(pct_lookup).astype("Int64")
 
-supply["credit_key"] = credit_key(supply)
-transactions["credit_key"] = credit_key(transactions)
+eco_tx = transactions["credit_class"] == "Ecosystem"
+exact = transactions["plant_community_type_common_name"].isin(
+    supply["plant_community_type_common_name"])
+log("transactions", "PCT name spelt differently from supply register",
+    (eco_tx & ~exact & transactions["pct_id"].notna()).sum(),
+    "Fixed by matching on simplified name", "plant_community_type_common_name")
+log("transactions", "PCT has no credits left in the supply register",
+    (eco_tx & transactions["pct_id"].isna()).sum(),
+    "Kept; counted as zero supply in the gap analysis", "pct_id")
+
+# Credit key: simplified PCT name for ecosystem credits, scientific name for species credits
+supply["credit_key"] = supply["pct_name_key"].where(
+    supply["credit_class"] == "Ecosystem", supply["species_scientific_name"])
+transactions["credit_key"] = transactions["pct_name_key"].where(
+    eco_tx, transactions["species_scientific_name"])
 
 
 # STEP 11: Save the clean data and the data quality log
