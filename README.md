@@ -97,6 +97,17 @@ numbers, and 222 transactions whose PCT name did not appear in the supply regist
 Full details: [data quality report](outputs/reports/02_Data_Quality_Report.pdf) and
 [data dictionary](outputs/reports/03_Data_Dictionary.pdf).
 
+## How this compares with official reviews
+
+| Source | What it found | How it relates to this project |
+|---|---|---|
+| [NSW Audit Office, *Effectiveness of the Biodiversity Offsets Scheme* (Aug 2022)](https://www.audit.nsw.gov.au/our-work/reports/effectiveness-of-the-biodiversity-offsets-scheme) | 91% of ecosystem and 96% of species credit demand could not be matched to supply; most credit types had never traded; the BCT had met only about 20% of the obligations it took on; public registers lacked key data | Same direction as the finding that 71 of 305 credit types have under a year of supply. The Audit Office figures are higher because they include **all** obligations, including unmet ones held by the BCT, while this project only sees demand that was met (retirements). |
+| [IPART, *Biodiversity Credits Market Monitoring 2024–25* (Jul 2026)](https://www.ipart.nsw.gov.au/documents/final-report/annual-report-2024-25-biodiversity-credits-market-monitoring-july-2026) | About 40% of biodiversity types face offsetting difficulties; over a third of BCT settlements in 2024–25 did not follow like-for-like matching; data transparency problems remain | Consistent with the shortage ranking and the data quality issues found here (inconsistent names, no PCT ID in transactions, mislabelled file formats). |
+| [Henry Review of the BC Act (Aug 2023)](https://www.newcastleherald.com.au/story/8331389/biodiversity-laws-not-achieving-primary-purpose-ken-henry) | The Act is "not meeting its primary purpose"; 58 recommendations, including an overhaul of the Offsets Scheme | Policy context for why credit shortages matter. |
+
+**Takeaway:** the results here are consistent with official findings, and are best read as a
+*conservative lower bound* on scarcity.
+
 ## Limitations
 
 - **Demand is measured from retirements**, which is demand that was met. Unmet demand
@@ -111,6 +122,17 @@ Full details: [data quality report](outputs/reports/02_Data_Quality_Report.pdf) 
   "zero supply" types may be partly covered by similar credits.
 - **Zero supply can reflect one-off deals.** A stewardship site created for one development
   and then fully retired will show as zero supply.
+- **Old and new vegetation classifications.** NSW introduced a new eastern NSW PCT
+  classification in 2022 (IDs 3000 and above). The same vegetation can appear under an old
+  name in one register and a new name in another, so a few "zero supply" types may have
+  equivalent credits listed under the new classification.
+- **What the region view measures.** The subregion in the transactions register is where the
+  credits were located (the stewardship site), not where the development happened. The region
+  chart shows where supply is being used up, not where impacts occurred.
+- **One-off projects inflate some rates.** For example, the Tarengo Leek Orchid and Pine Donkey
+  Orchid figures (503 credits a year each) come from a single project (SSD 8642) that
+  retired both species together in June 2024. Averaging a one-off obligation as a yearly rate
+  overstates ongoing demand for those species.
 - **The BioBanking (pre-2017) registers are not yet included**, except where BioBanking
   credits appear as "Equivalence" credits in the BOS supply register.
 
