@@ -44,15 +44,16 @@ def read_html_register(path):
     return table
 
 
-# STEP 4: Test - load all three registers
-pd.set_option("display.width", 200)
+# STEP 4: Test - load all three registers (only runs when this file is run directly)
+if __name__ == "__main__":
+    pd.set_option("display.width", 200)
 
-demand = read_xml_register("data/raw/Demand.xls", "Credit status")
-supply = read_xml_register("data/raw/Supply.xls", "Credit ID")
-transactions = read_html_register("data/raw/Transactions.xls")
+    demand = read_xml_register("data/raw/Demand.xls", "Credit status")
+    supply = read_xml_register("data/raw/Supply.xls", "Credit ID")
+    transactions = read_html_register("data/raw/Transactions.xls")
 
-print("Demand:", demand.shape)
-print("Supply:", supply.shape)
-print("Transactions:", transactions.shape)
-print(transactions[["Transaction Date", "Transaction ID", "Transaction Type",
-                    "Number Of Credits", "Price Per Credit (Ex-Gst)"]].head())
+    print("Demand:", demand.shape)
+    print("Supply:", supply.shape)
+    print("Transactions:", transactions.shape)
+    print(transactions[["Transaction Date", "Transaction ID", "Transaction Type",
+                        "Number Of Credits", "Price Per Credit (Ex-Gst)"]].head())
