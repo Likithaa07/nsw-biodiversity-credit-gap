@@ -1,0 +1,21 @@
+dataset,check,column,rows_affected,action
+demand,Register has no listings,,1,Used credit retirements as the demand measure instead
+supply,Personal contact columns (9),,2861,Removed for privacy
+transactions,Personal contact columns (1),,2556,Removed for privacy
+supply,Blank or whitespace-only cells,,46418,Set to missing
+supply,Curly apostrophes (’) in names,,415,Replaced with straight apostrophe (')
+transactions,Blank or whitespace-only cells,,0,Set to missing
+transactions,Curly apostrophes (’) in names,,225,Replaced with straight apostrophe (')
+supply,Mixed date formats (some YYYY-MM-DD),cancellation_start_date,11,Converted to one date format
+supply,Duplicate Credit ID,credit_id,0,Dropped duplicates
+supply,"Number of credits missing, zero or negative (Expressions of Interest)",number_of_credits,35,Dropped rows
+supply,Ecosystem credit with no PCT ID,pct_id,0,"Kept, flagged (cannot be matched to demand)"
+supply,Species credit with no species name,species_scientific_name,0,"Kept, flagged (cannot be matched to demand)"
+supply,Missing IBRA subregion (BioBanking equivalence species credits),ibra_subregion,71,"Kept; expected, species credits are matched by species not region"
+transactions,"Row with no date, type or number of credits",,2,Dropped rows
+transactions,Exact duplicate rows,,0,Dropped duplicates
+transactions,Transaction ID appears on several rows,transaction_id,1569,Kept (one transaction can cover several credit types)
+transactions,Transfer with missing or $0 price,price_per_credit_ex_gst,2,"Kept, excluded from price analysis"
+transactions,Cancelled transactions,transaction_type,11,"Kept, excluded from demand"
+transactions,PCT name spelt differently from supply register,plant_community_type_common_name,95,Fixed by matching on simplified name
+transactions,PCT has no credits left in the supply register,pct_id,127,Kept; counted as zero supply in the gap analysis

@@ -1,0 +1,114 @@
+<?xml version="1.0"?><?mso-application progid="Excel.Sheet"?><Workbook xmlns="urn:schemas-microsoft-com:office:spreadsheet" xmlns:html="http://www.w3.org/TR/REC-html40" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:ss="urn:schemas-microsoft-com:office:spreadsheet" xmlns:x="urn:schemas-microsoft-com:office:excel">
+        
+        <Styles>
+            <Style ss:ID="s1">
+                <Alignment ss:WrapText="1"></Alignment>
+                <Font ss:Bold="1"></Font>
+                <Interior></Interior>
+                <NumberFormat></NumberFormat>
+                <Protection></Protection>
+            </Style>
+            <Style ss:ID="s2">
+                <Alignment ss:WrapText="1"></Alignment>
+            </Style>
+            <Style ss:ID="s8">
+                <Alignment ss:WrapText="1"></Alignment>
+                <Font ss:Bold="1" ss:Size="14" x:Family="Swiss"></Font>
+            </Style>
+        </Styles>
+        
+        <Worksheet ss:Name="BOSCreditDemandRegisterExport">            
+            <Table x:FullColumns="1" x:FullRows="1">
+                <Column ss:Width="170"></Column>
+                <Column ss:Width="170"></Column>
+                <Column ss:Width="170"></Column>
+                <Column ss:Width="170"></Column>
+                <Column ss:Width="170"></Column>
+                <Column ss:Width="170"></Column>
+                <Column ss:Width="170"></Column>
+                <Column ss:Width="170"></Column>
+                <Column ss:Width="170"></Column>
+                <Column ss:Width="170"></Column>
+                <Column ss:Width="170"></Column>
+                <Column ss:Width="170"></Column>
+                <Column ss:Width="170"></Column>
+                <Column ss:Width="170"></Column>
+                <Column ss:Width="170"></Column>
+                <Column ss:Width="170"></Column>
+                <Column ss:Width="170"></Column>
+                <Column ss:Width="170"></Column>
+                <Column ss:Width="170"></Column>
+                <Column ss:Width="170"></Column>
+                <Column ss:Width="170"></Column>
+                <Column ss:Width="170"></Column>
+                <Column ss:Width="170"></Column>
+                <Column ss:Width="170"></Column>
+                <Column ss:Width="170"></Column>
+                
+                <Row ss:AutoFitHeight="1">
+                    <Cell ss:StyleID="s8">
+                        <Data ss:Type="String">Biodiversity Offset Credit Demand Report</Data>
+                    </Cell>
+                </Row>
+                <Row>
+                    <Cell ss:StyleID="s2">
+                        <Data ss:Type="String">Date and Time Extracted: 5/10/2026 1:20 PM</Data>
+                    </Cell>
+                </Row>
+                
+                <Row ss:Height="60">
+                    <Cell ss:MergeAcross="4" ss:StyleID="s2">
+                        <Data ss:Type="String">The department is required by legislation to keep public registers under the BOS. The public registers are established in accordance with the Biodiversity Conservation Act 2016 and the Biodiversity Conservation Regulation 2017. The purpose of information provided on the public registers is to facilitate the biodiversity credit market and to connect credit buyers and sellers. By accessing and downloading data from the public registers you agree that you will only use this information for purposes relating to the purpose of the registers or the Biodiversity Conservation Act 2016 or the Biodiversity Conservation Regulation 2017.</Data>
+                    </Cell>
+                </Row>
+                <Row ss:Height="50">
+                    <Cell ss:MergeAcross="4" ss:StyleID="s2">
+                        <Data ss:Type="String">The Biodiversity Conservation Act 2016 requires the Department to include the names and contact details of some individuals on public registers on the Department’s website. If you would prefer that your name and/or contact details are not published on the public registers, please contact the Department at BOSCREDITS@environment.nsw.gov.au and include the reasons for your request. In particular, please inform the Department if you consider including your name or contact details on the public register will affect your safety or wellbeing.</Data>
+                    </Cell>
+                </Row>
+                <Row ss:Height="60">
+                    <Cell ss:MergeAcross="4" ss:StyleID="s2">
+                        <Data ss:Type="String">The Department can restrict information from its public registers if the Department considers it is not in the public interest to disclose the information. The Department is also required to not disclose or publish (or if already published, to remove) personal information from a public register if that the Department considers placing the information on the register affects the safety or wellbeing of any person – unless the Department considers that the public interest in maintaining public access to the information outweighs any individual interest in suppressing the information from the register.</Data>
+                    </Cell>
+                </Row>
+                
+                <Row>
+                    
+                    <Cell ss:StyleID="s1"><Data ss:Type="String">Credit status</Data></Cell>
+                    <Cell ss:StyleID="s1"><Data ss:Type="String">Number of credits</Data></Cell>
+                    <Cell ss:StyleID="s1"><Data ss:Type="String">IBRA Region</Data></Cell>
+                    <Cell ss:StyleID="s1"><Data ss:Type="String">IBRA Subregion</Data></Cell>
+                    <Cell ss:StyleID="s1"><Data ss:Type="String">Ecosystem or Species</Data></Cell>
+                    <Cell ss:StyleID="s1"><Data ss:Type="String">PCT ID</Data></Cell>
+                    <Cell ss:StyleID="s1"><Data ss:Type="String">Plant Community Type Common Name</Data></Cell>
+                    <Cell ss:StyleID="s1"><Data ss:Type="String">Vegetation Formation</Data></Cell>
+                    <Cell ss:StyleID="s1"><Data ss:Type="String">Offset Trading Group</Data></Cell>
+                    <Cell ss:StyleID="s1"><Data ss:Type="String">Threatened Ecological Community (NSW)</Data></Cell>
+                    <Cell ss:StyleID="s1"><Data ss:Type="String">Vegetation Class</Data></Cell>
+                    <Cell ss:StyleID="s1"><Data ss:Type="String">Hollow Bearing Trees</Data></Cell>
+                    <Cell ss:StyleID="s1"><Data ss:Type="String">Species ID</Data></Cell>
+                    <Cell ss:StyleID="s1"><Data ss:Type="String">Species Scientific Name</Data></Cell>
+                    <Cell ss:StyleID="s1"><Data ss:Type="String">Species Common Name</Data></Cell>
+                    <Cell ss:StyleID="s1"><Data ss:Type="String">Kingdom</Data></Cell>
+                    <Cell ss:StyleID="s1"><Data ss:Type="String">Threat Status</Data></Cell>
+                    <Cell ss:StyleID="s1"><Data ss:Type="String">Business Name</Data></Cell>
+                    <Cell ss:StyleID="s1"><Data ss:Type="String">Business Phone</Data></Cell>
+                    <Cell ss:StyleID="s1"><Data ss:Type="String">Business Email</Data></Cell>
+                    <Cell ss:StyleID="s1"><Data ss:Type="String">Contact First Name</Data></Cell>
+                    <Cell ss:StyleID="s1"><Data ss:Type="String">Contact Last Name</Data></Cell>
+                    <Cell ss:StyleID="s1"><Data ss:Type="String">Contact Email</Data></Cell>
+                    <Cell ss:StyleID="s1"><Data ss:Type="String">Contact Phone</Data></Cell>
+                    <Cell ss:StyleID="s1"><Data ss:Type="String">Contact Mobile</Data></Cell>
+                    
+                    <Cell ss:StyleID="s1"><Data ss:Type="String">Listed Date</Data></Cell>
+                    <Cell ss:StyleID="s1"><Data ss:Type="String">Case Number</Data></Cell>
+                    <Cell ss:StyleID="s1"><Data ss:Type="String">Public Register Expiry Date</Data></Cell>
+                    
+                </Row>
+            </Table><WorksheetOptions xmlns="urn:schemas-microsoft-com:office:excel">
+                <Selected></Selected>
+                <DoNotDisplayGridlines></DoNotDisplayGridlines>
+            </WorksheetOptions></Worksheet>
+        
+        
+    </Workbook>

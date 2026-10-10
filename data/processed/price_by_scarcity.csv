@@ -1,0 +1,9 @@
+credit_class,scarcity_band,credit_types,median_price
+Ecosystem,0 years (none left),26,5442.02
+Ecosystem,Under 1 year,18,1960.7625
+Ecosystem,1 to 10 years,47,4000.0
+Ecosystem,Over 10 years,100,3850.0
+Species,0 years (none left),1,3010.0
+Species,Under 1 year,4,2515.995
+Species,1 to 10 years,2,1457.2
+Species,Over 10 years,45,885.87

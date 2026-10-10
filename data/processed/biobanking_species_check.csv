@@ -1,0 +1,66 @@
+scarcity_rank,credit_name,available_credits,retired_per_year,years_of_supply,biobanking_credits
+16,Harrow Wattle (Acacia acanthoclada),0.0,18.401239504198323,0.0,0.0
+20,Pimelea curviflora var. curviflora (Pimelea curviflora var. curviflora),0.0,5.987704918032787,0.0,9552.0
+40,Small Purple-pea (Swainsona recta),0.0,0.43812475009996,0.0,0.0
+42,Pine Donkey Orchid population in the Muswellbrook local government area (Diuris tricolor - endangered population),0.0,0.1460415833666533,0.0,0.0
+54,Tarengo Leek Orchid (Prasophyllum petilum),162.0,503.1132546981208,0.3219950945184373,0.0
+55,Pine Donkey Orchid (Diuris tricolor),168.0,503.1132546981208,0.3339208387598608,0.0
+59,Superb Parrot (Polytelis swainsonii),31.0,62.21371451419432,0.4982824163782604,0.0
+66,Singleton Mint Bush (Prostanthera cineolifera),19.0,22.344362255097963,0.8503263500243812,0.0
+68,Striped Legless Lizard (Delma impar),81.0,94.63494602159136,0.8559206023271732,284.0
+69,Chariot Wheels (Maireana cheelii),29.0,32.859356257497005,0.8825492432884628,0.0
+71,Dural Land Snail (Pommerhelix duralensis),53.0,57.83246701319472,0.9164402408755592,18.0
+73,Yellow-bellied Glider population on the Bago Plateau (Petaurus australis - endangered population),275.0,247.83256697321076,1.1096201090864943,0.0
+91,Bitter Quandong (Santalum murrayanum),1.0,0.43812475009996,2.2824549395391283,0.0
+99,Golden Sun Moth (Synemon plana),594.0,194.9655137944822,3.04669266086796,779.0
+141,Southern Myotis (Myotis macropus),5573.0,370.5074970011995,15.041530994936812,275.0
+143,Eastern Pygmy-possum (Cercartetus nanus),11289.0,731.8143742502999,15.426042992889974,5861.0
+148,Pink-tailed Legless Lizard (Aprasia parapulchella),2364.0,139.3236705317873,16.967683890158803,405.0
+149,Common Planigale (Planigale maculata),1043.0,61.19142343062775,17.04487232892108,220.0
+150,A spear-grass (Austrostipa nullanulla),95.0,5.403538584566173,17.581071831585177,0.0
+158,Koala (Phascolarctos cinereus),69995.0,3389.479108356657,20.65066571067792,11458.0
+163,Austral Pillwort (Pilularia novae-hollandiae),564.0,25.41123550579768,22.194906653449458,0.0
+167,Pterostylis chaetophora (Pterostylis chaetophora),532.0,23.074570171931228,23.05568407281297,0.0
+170,Squirrel Glider (Petaurus norfolcensis),61135.0,2554.7054178328667,23.93035203716766,5792.0
+171,Pale-headed Snake (Hoplocephalus bitorquatus),5572.0,229.28528588564572,24.30160303779368,0.0
+177,Cymbidium canaliculatum population in the Hunter Catchment (Cymbidium canaliculatum - endangered population),8.0,0.2920831667333067,27.38945927446954,0.0
+185,Biconvex Paperbark (Melaleuca biconvexa),67.0,2.044582167133147,32.76953163195463,0.0
+187,Silky Swainson-pea (Swainsona sericea),1722.0,52.136845261895246,33.028465595683855,0.0
+190,Tetratheca glandulosa (Tetratheca glandulosa),415.0,11.82936825269892,35.082177774397714,1020.0
+192,Tylophora linearis (Tylophora linearis),12082.0,342.90563774490204,35.23418302322626,0.0
+196,Regent Honeyeater (Anthochaera phrygia),21839.0,588.109456217513,37.13424392197295,1512.0
+199,Slender Darling Pea (Swainsona murrayana),20868.0,526.4799080367853,39.63684023159711,0.0
+201,Slender Marsdenia (Marsdenia longiloba),1408.0,33.88164734106358,41.55642096816068,0.0
+211,Hoary Sunray (Leucochrysum albicans var. tricolor),7285.0,129.97700919632146,56.04837382430074,4056.0
+217,Large-eared Pied Bat (Chalinolobus dwyeri),48999.0,775.4808076769292,63.18531614829252,0.0
+224,Rufous Bettong (Aepyprymnus rufescens),5158.0,72.14454218312675,71.49535978629245,1103.0
+225,Emu population in the New South Wales North Coast Bioregion and Port Stephens local government area (Dromaius novaehollandiae - endangered population),2070.0,28.77019192323071,71.94946789105578,0.0
+231,Southern Bell Frog (Litoria raniformis),656.0,7.594162335065974,86.38214078871162,0.0
+233,Little Eagle (Hieraaetus morphnoides),291.0,3.0668732506997203,94.8849124865552,0.0
+234,Giant Barred Frog (Mixophyes iteratus),3064.0,31.398940423830467,97.58291071741242,9.0
+239,Cumberland Plain Land Snail (Meridolum corneovirens),3706.0,33.73560575769692,109.85425981729882,1824.0
+240,Masked Owl (Tyto novaehollandiae),15974.0,141.2222111155538,113.11251873070744,0.0
+244,Brush-tailed Phascogale (Phascogale tapoatafa),23538.0,184.4505197920832,127.61145930373398,5758.0
+246,Winged Peppercress (Lepidium monoplocoides),1991.0,14.45811675329868,137.70811468552742,0.0
+247,Mossgiel Daisy (Brachyscome papillosa),1510.0,10.953118752499,137.86027834816338,0.0
+250,Spike-Rush (Eleocharis obicis),645.0,4.089164334266294,157.7339395717219,0.0
+253,Austral Toadflax (Thesium australe),1045.0,6.279788084766094,166.4068891966318,4792.0
+260,"Rusty Plum, Plum Boxwood (Niemeyera whitei)",2249.0,10.807077169132349,208.10437131176351,0.0
+261,Red-crowned Toadlet (Pseudophryne australis),1663.0,7.740203918432627,214.8522206294474,640.0
+262,Netted Bottle Brush (Callistemon linearifolius),14799.0,66.44892043182728,222.71242186971136,90.0
+264,Bynoe's Wattle (Acacia bynoeana),100.0,0.43812475009996,228.24549395391284,3387.0
+267,Eastern Cave Bat (Vespadelus troughtoni),33175.0,141.8063774490204,233.94575474524385,0.0
+268,Native Milkwort (Polygala linariifolia),413.0,1.7524990003998402,235.663472507415,21.0
+270,Tall Knotweed (Persicaria elatior),38.0,0.1460415833666533,260.1998631074606,0.0
+273,Small-flower Grevillea (Grevillea parviflora subsp. parviflora),130.0,0.43812475009996,296.71914214008666,33431.0
+275,Stephens' Banded Snake (Hoplocephalus stephensii),577.0,1.606457417033187,359.17540912202105,0.0
+277,Greater Glider (Petauroides volans),16352.0,43.812475009996,373.2270317134383,410.0
+278,Sooty Owl (Tyto tenebricosa),1529.0,3.797081167532987,402.6777233717685,0.0
+282,Pink Cockatoo (Lophochroa leadbeateri),8543.0,19.42353058776489,439.8273507176565,0.0
+287,Barking Owl (Ninox connivens),27953.0,51.40663734506197,543.7624681102608,0.0
+289,Gang-gang Cockatoo (Callocephalon fimbriatum),2536.0,4.3812475009996,578.830572667123,129.0
+292,Powerful Owl (Ninox strenua),17006.0,27.16373450619752,626.0553016419744,0.0
+297,Key's Matchstick Grasshopper (Keyacris scurra),983.0,1.0222910835665735,961.5656595286983,0.0
+298,Plains-wanderer (Pedionomus torquatus),4183.0,3.6510395841663335,1145.7010814510609,0.0
+304,Brush-tailed Rock-wallaby (Petrogale penicillata),3422.0,0.5841663334666134,5857.920602327173,0.0
+305,Coolabah Bertya (Bertya opponens),118997.0,8.7624950019992,13580.264522016883,0.0
