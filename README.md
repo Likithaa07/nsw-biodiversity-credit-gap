@@ -35,30 +35,72 @@ credit types from most to least under-supplied.
 | 4 | Northern Swamp Mahogany – Bottlebrush Swamp Forest | 0 | 153 |
 | 5 | Narrow-leaved Ironbark – Grey Box – Spotted Gum woodland (central & lower Hunter) | 0 | 137 |
 
-Full ranking: `data/processed/gap_ranking.csv` (created when you run the pipeline).
+Full ranking: [`data/processed/gap_ranking.csv`](data/processed/gap_ranking.csv).
 
 ## Data
 
-All data comes from the DCCEEW [Biodiversity Offsets Scheme public registers](https://www.environment.nsw.gov.au/topics/animals-and-plants/biodiversity-offsets-scheme/maps-systems-and-resources/public-registers):
+### How the data was sourced
 
-| Register | Rows | Used for |
-|---|---:|---|
-| Credit Supply Register | 2,861 | Credits available now (Issued, Equivalence) and in the pipeline (Pending Review) |
-| Credit Transactions Register | 2,556 | Retirements (demand) and transfers with prices |
-| Credit Demand Register | 0 | Empty at extraction, so retirements are used as the demand measure |
-| BioBanking credits registers (species and ecosystem) | 837 | Cross-check of pre-2017 supply (extracted 6 October 2026) |
+There is no ready-made dataset for this question. I sourced the data directly from the
+government's live public registers. I searched the DCCEEW
+[Biodiversity Offsets Scheme public registers](https://www.environment.nsw.gov.au/topics/animals-and-plants/biodiversity-offsets-scheme/maps-systems-and-resources/public-registers)
+and the [BioBanking public registers](https://www.environment.nsw.gov.au/bimsprapp/BiobankingPR.aspx),
+ran a full search on each with no filters, and exported every record (5 to 6 October 2026).
+
+The exports were harder to use than they looked. All five files are named `.xls`, but only two
+are real Excel files:
+
+| File | What it actually is | How it is read (`src/readers.py`, `src/biobanking_check.py`) |
+|---|---|---|
+| `Supply.xls`, `Demand.xls` | SpreadsheetML **XML** with broken characters (an unescaped `&`), title rows above the header, and skipped cells | Custom `lxml` parser in recovery mode that rebuilds skipped cells from `ss:Index` and finds the real header row |
+| `Transactions.xls` | An **HTML table**, with IDs stored as formulas (`="00018450"`) | `pandas.read_html`, then strips the formula wrapper |
+| `BioBanking_*.xls` | Real Excel (BIFF) files in a Crystal Reports layout, with blank spacer columns | `xlrd`, finding the header row and mapping columns by label |
+
+Because the readers don't depend on fixed positions, a fresh export can be dropped in and the
+whole pipeline re-run (see the [refresh guide](outputs/reports/04_Refresh_Guide.pdf)).
+
+### Raw data (`data/raw/`)
+
+These are the files exactly as exported from DCCEEW. They are never edited by hand.
+
+| File | Rows | What it contains | Where it is used |
+|---|---:|---|---|
+| `Supply.xls` (Credit Supply Register) | 2,861 | Every credit holding: credit type (PCT or species), number of credits, status (Issued, Equivalence, Pending Review), stewardship site and IBRA subregion | `clean.py`, then `gap_analysis.py`. This is the **supply** side: credits available now (Issued + Equivalence) and in the pipeline (Pending Review) |
+| `Transactions.xls` (Credit Transactions Register) | 2,556 | Every transfer and retirement since November 2019, with date, credits, price per credit and the reason for retirement | `clean.py`, then `gap_analysis.py` (retirements are the **demand** measure) and `price_trends.py` (sale prices) |
+| `Demand.xls` (Credit Demand Register) | 0 | Credit obligations that proponents have registered as wanted | Read and checked by `clean.py`. It was **empty** at extraction, which is why retirements are used as the demand measure (see Limitations) |
+| `BioBanking_Species.xls` | 200 | Pre-2017 BioBanking species credit holdings | `biobanking_check.py`: cross-checks whether old credits could ease the scarce species shortages |
+| `BioBanking_Ecosystem.xls` | 637 | Pre-2017 BioBanking ecosystem credit holdings (old BioMetric vegetation codes) | `biobanking_check.py`: counted and reported. They can't be matched to PCTs because there is no public code lookup |
+
+### Processed data (`data/processed/`)
+
+These are all created by the scripts in `src/` and are re-created on every run.
+
+| File | Created by | What it is | Used for |
+|---|---|---|---|
+| `supply_clean.csv` | `clean.py` | Supply register with tidy column names, typed numbers, personal contact columns removed, 35 empty expressions of interest dropped and a `credit_key` added | Input to the gap analysis |
+| `transactions_clean.csv` | `clean.py` | Transactions with dates and prices converted, empty rows dropped, invalid $0 prices flagged (`price_valid`), and each credit type linked to supply through `credit_key` (95 linked by name matching) | Input to the gap analysis and price trends |
+| `data_quality_log.csv` | `clean.py` | One row per issue found: what it was, how many rows, and what was done | [Data Quality Report](outputs/reports/02_Data_Quality_Report.pdf) and the dashboard's data quality page |
+| `gap_ranking.csv` | `gap_analysis.py` | **Main result.** One row per credit type: available, pending, retired per year, years of supply and scarcity rank | Key findings, the dashboard's scarcity page and the Project 2 target list |
+| `gap_by_region.csv` | `gap_analysis.py` | Supply and demand pooled by IBRA subregion | The scarcity-by-region chart and the findings report |
+| `price_by_year.csv` | `price_trends.py` | Median price per credit (with quartiles), number of sales and total value by year, ecosystem vs species | The price trend chart and the dashboard's prices page |
+| `price_by_credit_type.csv` | `price_trends.py` | Median price and number of sales for each credit type | Price comparison in the findings report |
+| `price_by_scarcity.csv` | `price_trends.py` | Median price by scarcity band (0 years, under 1, 1 to 10, over 10) | Tests whether scarce credits cost more (they do, about 40% more) |
+| `biobanking_species_check.csv` | `biobanking_check.py` | The scarce species matched against BioBanking holdings | BioBanking cross-check section |
+
+`outputs/powerbi_data.xlsx` packages the processed tables as formatted Excel tables for the
+Power BI dashboard (`export_powerbi.py`).
 
 Field definitions follow the [BOS public registers user guide](https://www.environment.nsw.gov.au/sites/default/files/biodiversity-offset-scheme-public-registers-user-guide-230238.pdf).
-The raw files are **not** included in this repository because they contain personal contact
-details. See the [refresh guide](outputs/reports/04_Refresh_Guide.pdf) to download them.
+Every field is described in the [Data Dictionary](outputs/reports/03_Data_Dictionary.pdf).
 
 ## Data source and licence
 
 Register data © State of New South Wales (Department of Climate Change, Energy, the
 Environment and Water), licensed under
 [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/). The data has been cleaned and
-summarised for this analysis. The original registers are available from DCCEEW at the link
-above. Personal contact details in the registers are removed and never published here.
+summarised for this analysis. The raw files in `data/raw/` are the registers exactly as
+published by DCCEEW. The processed files leave out the personal contact columns, because the
+analysis doesn't need them.
 
 ## Installation
 
@@ -210,8 +252,8 @@ point to where new stewardship sites would be most valuable.
 ## Repository structure
 
 ```
-data/raw/          original register downloads (not committed)
-data/processed/    cleaned data and results (not committed)
+data/raw/          original register exports from DCCEEW
+data/processed/    cleaned data and results
 src/               Python pipeline: readers, clean, gap_analysis, price_trends, export_powerbi, make_charts
 outputs/           dashboard PDF, report PDFs (reports/), charts (figures/), Power BI data file
 ```
