@@ -80,7 +80,7 @@ These are all created by the scripts in `src/` and are re-created on every run.
 | `supply_clean.csv` | `clean.py` | Supply register with tidy column names, typed numbers, personal contact columns removed, 35 empty expressions of interest dropped and a `credit_key` added | Input to the gap analysis |
 | `transactions_clean.csv` | `clean.py` | Transactions with dates and prices converted, empty rows dropped, invalid $0 prices flagged (`price_valid`), and each credit type linked to supply through `credit_key` (95 linked by name matching) | Input to the gap analysis and price trends |
 | `data_quality_log.csv` | `clean.py` | One row per issue found: what it was, how many rows, and what was done | [Data Quality Report](outputs/reports/02_Data_Quality_Report.pdf) and the dashboard's data quality page |
-| `gap_ranking.csv` | `gap_analysis.py` | **Main result.** One row per credit type: available, pending, retired per year, years of supply and scarcity rank | Key findings, the dashboard's scarcity page and the Project 2 target list |
+| `gap_ranking.csv` | `gap_analysis.py` | **Main result.** One row per credit type: available, pending, retired per year, years of supply and scarcity rank | Key findings, the dashboard's scarcity page |
 | `gap_by_region.csv` | `gap_analysis.py` | Supply and demand pooled by IBRA subregion | The scarcity-by-region chart and the findings report |
 | `price_by_year.csv` | `price_trends.py` | Median price per credit (with quartiles), number of sales and total value by year, ecosystem vs species | The price trend chart and the dashboard's prices page |
 | `price_by_credit_type.csv` | `price_trends.py` | Median price and number of sales for each credit type | Price comparison in the findings report |
