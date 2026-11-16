@@ -6,8 +6,6 @@ Run after clean.py and gap_analysis.py:  python src/price_model.py
 # STEP 1: Imports, file locations and settings
 from __future__ import annotations
 
-import logging
-import sys
 from pathlib import Path
 
 import matplotlib
@@ -25,13 +23,11 @@ from sklearn.model_selection import GroupKFold
 from sklearn.pipeline import make_pipeline
 from sklearn.preprocessing import OneHotEncoder, OrdinalEncoder, StandardScaler
 
-ROOT = Path(__file__).resolve().parents[1]
-PROCESSED = ROOT / "data" / "processed"
-FIGURES = ROOT / "outputs" / "figures"
+from common import (OUTPUTS, PROCESSED, DataValidationError, get_logger, require_columns,
+                    require_files)
 
-logging.basicConfig(level=logging.INFO, stream=sys.stdout, datefmt="%H:%M:%S",
-                    format="%(asctime)s  %(levelname)-7s %(message)s")
-log = logging.getLogger("price_model")
+FIGURES = OUTPUTS / "figures"
+log = get_logger("price_model")
 
 MIN_PRICE = 10          # prices below $10 a credit are token amounts, not market prices
 TOP_SUBREGIONS = 15     # keep the 15 busiest subregions, group the rest as "Other"
@@ -59,11 +55,14 @@ plt.rcParams.update({
 # STEP 2: Build one row per sale with the features the models use
 def load_sales(processed_dir: Path = PROCESSED) -> pd.DataFrame:
     tx_path, gap_path = processed_dir / "transactions_clean.csv", processed_dir / "gap_ranking.csv"
-    for p in (tx_path, gap_path):
-        if not p.exists():
-            raise FileNotFoundError(f"{p} is missing. Run clean.py and gap_analysis.py first.")
+    require_files(tx_path, gap_path, hint="Run clean.py and gap_analysis.py first.")
     tx = pd.read_csv(tx_path, parse_dates=["transaction_date"])
     gap = pd.read_csv(gap_path)
+    require_columns(tx, ["price_valid", "philanthropic_reason_for_transfer_disclosed",
+                         "price_per_credit_ex_gst", "credit_key", "credit_class",
+                         "vegetation_formation", "ibra_subregion", "number_of_credits",
+                         "transaction_date"], "transactions_clean")
+    require_columns(gap, ["credit_key", "years_of_supply"], "gap_ranking")
 
     # Real market sales only: a valid price, not a disclosed philanthropic transfer
     sales = tx[tx["price_valid"] & (tx["philanthropic_reason_for_transfer_disclosed"] != "Yes")]
@@ -84,7 +83,7 @@ def load_sales(processed_dir: Path = PROCESSED) -> pd.DataFrame:
     sales["log_credits"] = np.log(sales["number_of_credits"])
     sales["log_price"] = np.log(sales["price_per_credit_ex_gst"])
     if sales[CATEGORICAL + NUMERIC + ["log_price"]].isna().any().any():
-        raise ValueError("Some sales are missing a model feature.")
+        raise DataValidationError("Some sales are missing a model feature.")
     return sales.reset_index(drop=True)
 
 
@@ -255,6 +254,7 @@ def chart_importance(imp: pd.DataFrame, path: Path) -> None:
 
 # STEP 8: Run everything and save the results
 def main(processed_dir: Path = PROCESSED, figures_dir: Path = FIGURES) -> dict:
+    processed_dir, figures_dir = Path(processed_dir), Path(figures_dir)
     figures_dir.mkdir(parents=True, exist_ok=True)
     sales = load_sales(processed_dir)
     coefs, r2, n_types = scarcity_regression(sales)

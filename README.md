@@ -1,5 +1,7 @@
 # NSW Biodiversity Credit Market: Gap Analysis & Data Quality Pipeline
 
+[![tests](https://github.com/Likithaa07/nsw-biodiversity-credit-gap/actions/workflows/tests.yml/badge.svg)](https://github.com/Likithaa07/nsw-biodiversity-credit-gap/actions/workflows/tests.yml)
+
 Which biodiversity credits are running out in NSW? This project cleans the public
 Biodiversity Offsets Scheme (BOS) registers published by DCCEEW, measures how fast each
 credit type is being used compared with how many are still available, and ranks the
@@ -62,7 +64,8 @@ whole pipeline re-run (see the [refresh guide](outputs/reports/04_Refresh_Guide.
 
 ### Raw data (`data/raw/`)
 
-These are the files exactly as exported from DCCEEW. They are never edited by hand.
+These are the files exactly as exported from DCCEEW. They are never edited by hand. Source,
+export date and licence for each file are in [`data/raw/README.md`](data/raw/README.md).
 
 | File | Rows | What it contains | Where it is used |
 |---|---:|---|---|
@@ -105,7 +108,7 @@ analysis doesn't need them.
 
 ## Installation
 
-Requirements: Python 3.10 or later.
+Requirements: Python 3.12 or later. Package versions are pinned in `requirements.txt`.
 
 ```bash
 git clone https://github.com/Likithaa07/nsw-biodiversity-credit-gap.git
@@ -120,17 +123,55 @@ Then download the registers into `data/raw/` as described in the
 
 ## How to run it
 
-Run the scripts in this order:
+Run the whole pipeline with one command, from the repository folder:
 
 ```bash
-python src/clean.py           # clean the registers and write the data quality log
-python src/gap_analysis.py    # supply vs demand ranking, by credit type and by region
-python src/price_trends.py    # prices by year and by scarcity
-python src/export_powerbi.py  # one Excel file for the Power BI dashboard
-python src/make_charts.py     # the charts in outputs/figures
-python src/biobanking_check.py  # BioBanking species cross-check (needs BioBanking_*.xls)
-python src/price_model.py     # price regression and machine learning model
+python src/run_all.py
 ```
+
+It runs these steps in order and stops with a clear message if an input file is missing or
+the data fails a check:
+
+| Step | Script | What it does |
+|---:|---|---|
+| 1 | `clean.py` | Cleans the registers and writes the data quality log |
+| 2 | `gap_analysis.py` | Supply vs demand ranking, by credit type and by region |
+| 3 | `price_trends.py` | Prices by year and by scarcity |
+| 4 | `biobanking_check.py` | BioBanking species cross-check |
+| 5 | `export_powerbi.py` | One Excel file for the Power BI dashboard |
+| 6 | `make_charts.py` | The charts in `outputs/figures` |
+| 7 | `price_model.py` | Price regression and machine learning model |
+
+Each script can also be run on its own, for example `python src/gap_analysis.py`.
+
+**Or with Docker** (no Python setup needed):
+
+```bash
+docker build -t credit-gap .
+docker run --rm -v "$PWD/data:/app/data" -v "$PWD/outputs:/app/outputs" credit-gap
+```
+
+### Tests and checks
+
+```bash
+python -m pytest -v
+```
+
+The 24 tests cover the register readers (using small files that copy the quirks of the real
+exports), the cleaning steps, the data checks and the scarcity calculation. They also run the
+pipeline on the real registers and confirm the headline findings (305 credit types, 43 with zero
+supply, 71 under one year, and a significant scarcity premium in the price model).
+
+Every push runs the tests and the full pipeline on GitHub Actions (`.github/workflows/tests.yml`).
+A second workflow (`monthly_refresh.yml`) re-runs the pipeline on the 1st of each month, or on
+demand from the Actions tab after new exports are added, and saves the results as a download.
+
+While it runs, the pipeline checks that:
+
+- every input file exists and has the expected columns
+- Credit IDs are unique, and credit numbers and prices are not negative
+- transaction dates fall between 2017 and today
+- at least 95% of retirements can be linked to a credit type
 
 ## Outputs
 
@@ -297,10 +338,15 @@ point to where new stewardship sites would be most valuable.
 ## Repository structure
 
 ```
-data/raw/          original register exports from DCCEEW
+data/raw/          original register exports from DCCEEW (+ README with source, date, licence)
 data/processed/    cleaned data and results
-src/               Python pipeline: readers, clean, gap_analysis, price_trends, export_powerbi, make_charts, price_model
+src/               Python pipeline: run_all.py runs everything; common.py holds shared paths,
+                   logging and data checks; readers, clean, gap_analysis, price_trends,
+                   biobanking_check, export_powerbi, make_charts, price_model
+tests/             pytest tests
 outputs/           dashboard PDF, report PDFs (reports/), charts (figures/), Power BI data file
+.github/workflows/ tests on every push, and a monthly refresh
+Dockerfile         runs the pipeline in a container
 ```
 
 ## References
