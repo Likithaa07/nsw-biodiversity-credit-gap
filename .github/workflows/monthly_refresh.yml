@@ -1,0 +1,34 @@
+# Re-runs the pipeline on the 1st of every month (and on demand from the Actions tab).
+# The registers are exported by hand from the DCCEEW search pages (see data/raw/README.md),
+# so this checks the pipeline still runs cleanly and publishes the latest results as a
+# downloadable artifact. After dropping in new exports, run it from the Actions tab.
+name: monthly refresh
+
+on:
+  schedule:
+    - cron: "0 20 1 * *"   # 20:00 UTC on the 1st = 7 am on the 2nd in Sydney (AEDT)
+  workflow_dispatch:
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+      - name: Install packages
+        run: pip install -r requirements.txt
+      - name: Run the whole pipeline
+        run: python src/run_all.py
+      - name: Check the results
+        run: python -m pytest -v
+      - name: Save the results
+        uses: actions/upload-artifact@v4
+        with:
+          name: results-${{ github.run_number }}
+          path: |
+            data/processed/
+            outputs/figures/
+            outputs/powerbi_data.xlsx
