@@ -23,9 +23,7 @@ credit types from most to least under-supplied.
   2025, and credit sales are worth about **$726 million** since 2019.
 - **The tightest subregion is Lower Slopes** (NSW South Western Slopes), with about 1.1 years
   of supply when all credit types are pooled.
-- Prices broadly support the ranking. Ecosystem credit types with no supply left sell for a
-  median of about $5,400 per credit, against about $3,850 for plentiful types. Median
-  species credit prices have risen from about $330 (2020) to $800–900 (2024–2026).
+- **A price model confirms the scarcity premium.** After allowing for year, vegetation type, region and deal size, credit types with no supply left sell for about **69% more** than plentiful ones (regression on 1,276 sales). A gradient boosting model predicts sale prices with R² 0.66 on unseen credit types, about twice the baseline. [Details](#price-model-what-drives-credit-prices)
 
 | Rank | Credit type | Available | Retired per year |
 |---:|---|---:|---:|
