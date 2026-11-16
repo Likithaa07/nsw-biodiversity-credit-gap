@@ -1,0 +1,7 @@
+model,test,n_test,r2_log_price,mae_log_price,median_pct_error
+Baseline,"5-fold, unseen credit types",1276,0.324,0.7742,53.1994
+Linear (ridge),"5-fold, unseen credit types",1276,0.6301,0.596,41.0574
+Gradient boosting,"5-fold, unseen credit types",1276,0.6571,0.5551,37.7418
+Baseline,"Train 2019-24, test 2025-26",594,0.3659,0.7291,39.7971
+Linear (ridge),"Train 2019-24, test 2025-26",594,0.6065,0.6218,48.7504
+Gradient boosting,"Train 2019-24, test 2025-26",594,0.6146,0.5891,42.1325

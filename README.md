@@ -128,6 +128,7 @@ python src/price_trends.py    # prices by year and by scarcity
 python src/export_powerbi.py  # one Excel file for the Power BI dashboard
 python src/make_charts.py     # the charts in outputs/figures
 python src/biobanking_check.py  # BioBanking species cross-check (needs BioBanking_*.xls)
+python src/price_model.py     # price regression and machine learning model
 ```
 
 ## Outputs
@@ -141,12 +142,13 @@ python src/biobanking_check.py  # BioBanking species cross-check (needs BioBanki
 | `outputs/reports/02_Data_Quality_Report.pdf` | Every data issue found and how it was handled |
 | `outputs/reports/03_Data_Dictionary.pdf` | Definitions of every column in the clean data and results |
 | `outputs/reports/04_Refresh_Guide.pdf` | How to update the analysis with new register downloads |
-| `outputs/figures/*.png` | The 8 charts used in the reports |
+| `outputs/figures/*.png` | The 8 charts used in the reports, plus 3 price model charts (09–11) |
 
 Running the pipeline also creates these files in `data/processed/` (not committed):
 `supply_clean.csv`, `transactions_clean.csv`, `data_quality_log.csv`, `gap_ranking.csv`,
 `gap_by_region.csv`, `price_by_year.csv`, `price_by_scarcity.csv`,
-`price_by_credit_type.csv` and `biobanking_species_check.csv`.
+`price_by_credit_type.csv`, `biobanking_species_check.csv` and the price model results
+(`price_model_coefficients.csv`, `price_model_scores.csv`, `price_model_importance.csv`).
 
 ## Method
 
@@ -166,6 +168,48 @@ Running the pipeline also creates these files in `data/processed/` (not committe
 5. **Prices.** The median price per credit (ex GST), using transfers with a real price and
    excluding $0 and disclosed philanthropic transfers. Medians are used because a few very
    large sales would distort an average.
+
+## Price model: what drives credit prices?
+
+`src/price_model.py` uses the 1,276 real sales (token prices under $10 left out) to answer two
+questions.
+
+**1. Do scarce credits really cost more, once other factors are allowed for?** A regression of
+log price on scarcity, controlling for year, ecosystem or species, vegetation formation, IBRA
+subregion and sale size. Standard errors are clustered by credit type, because sales of the same
+type are related. R² = 0.69.
+
+| Compared with credit types with over 10 years of supply | Price difference | 95% CI | p |
+|---|---:|---:|---:|
+| None left | **+69%** | +27% to +124% | <0.001 |
+| Under 1 year | +19% | −19% to +76% | 0.38 |
+| 1 to 10 years | **+58%** | +31% to +91% | <0.001 |
+| Each doubling of the number of credits in a sale | −5% | −6% to −3% | <0.001 |
+
+Credit types with no supply left sell for about **69% more** than plentiful ones, even after
+allowing for vegetation type, region and year. Bulk deals get a small discount.
+
+**2. Can the price of a sale be predicted?** Three models, each tested on sales it never saw:
+
+| Model | Unseen credit types (5-fold grouped CV): R² / typical error | Train 2019–24, test 2025–26: R² / typical error |
+|---|---:|---:|
+| Baseline (median price for that class and year) | 0.32 / 53% | 0.37 / 40% |
+| Linear regression (ridge) | 0.63 / 41% | 0.61 / 49% |
+| **Gradient boosting** | **0.66 / 38%** | **0.62 / 42%** |
+
+R² is on log price; "typical error" is the median % difference between predicted and actual
+price. Gradient boosting explains about twice as much of the price variation as the baseline.
+Predicting next year's prices is harder: on 2025–26 sales the typical error is similar to the
+baseline, although big misses are much rarer.
+
+**What matters most** (permutation importance): subregion, then vegetation formation, then
+ecosystem vs species. Scarcity, year and sale size matter less once those are known.
+
+![Scarcity premium](outputs/figures/09_scarcity_premium.png)
+
+Limitations: scarcity is measured from today's supply, so it is applied to past sales as a
+snapshot; and the model has no information on site condition or the parties involved, which
+also affect price.
 
 ## Data quality
 
@@ -254,7 +298,7 @@ point to where new stewardship sites would be most valuable.
 ```
 data/raw/          original register exports from DCCEEW
 data/processed/    cleaned data and results
-src/               Python pipeline: readers, clean, gap_analysis, price_trends, export_powerbi, make_charts
+src/               Python pipeline: readers, clean, gap_analysis, price_trends, export_powerbi, make_charts, price_model
 outputs/           dashboard PDF, report PDFs (reports/), charts (figures/), Power BI data file
 ```
 

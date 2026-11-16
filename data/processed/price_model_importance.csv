@@ -1,0 +1,7 @@
+feature,importance,std,label
+subregion,0.3024,0.1247,IBRA subregion
+formation,0.2532,0.1209,Vegetation formation
+credit_class,0.1108,0.0983,Ecosystem or species
+year,0.0545,0.0112,Year of sale
+scarcity_band,0.0498,0.0325,Scarcity (years of supply)
+log_credits,0.0356,0.0059,Number of credits in the sale
